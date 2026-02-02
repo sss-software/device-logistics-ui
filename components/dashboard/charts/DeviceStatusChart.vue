@@ -10,15 +10,21 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
+import { DeviceService } from '@/services/device.service'
 
 const chartRef = ref<HTMLDivElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
+const deviceService = new DeviceService()
 
-onMounted(() => {
+onMounted(async () => {
   if (!chartRef.value) return
 
   chartInstance = echarts.init(chartRef.value)
-
+  const stats = await deviceService.getDevicesByStatus()
+  const chartData = stats.map((s) => ({
+    value: s.count,
+    name: s.status,
+  }))
   chartInstance.setOption({
     tooltip: { trigger: 'item' },
     legend: { bottom: '0%' },
@@ -27,11 +33,7 @@ onMounted(() => {
         name: 'Devices',
         type: 'pie',
         radius: '60%',
-        data: [
-          { value: 12, name: 'Active' },
-          { value: 5, name: 'Retired' },
-          { value: 3, name: 'Under Repair' },
-        ],
+        data: chartData,
       },
     ],
   })

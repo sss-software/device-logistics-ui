@@ -1,10 +1,9 @@
 <template>
-  <v-container>
-    <v-card class="pa-4">
-      <v-card-title>Devices</v-card-title>
-      <v-card-text> Device list will go here. </v-card-text>
-    </v-card>
+  <v-container fluid>
+    <DevicesList />
   </v-container>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DevicesList from '@/components/devices/DevicesList.vue'
+</script>

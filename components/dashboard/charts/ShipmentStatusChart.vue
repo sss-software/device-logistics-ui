@@ -10,15 +10,21 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
+import { ShipmentService } from '@/services/shipment.service'
 
 const chartRef = ref<HTMLDivElement | null>(null)
 let chartInstance: echarts.ECharts | null = null
+const shipmentService = new ShipmentService()
 
-onMounted(() => {
+onMounted(async () => {
   if (!chartRef.value) return
 
   chartInstance = echarts.init(chartRef.value)
-
+  const stats = await shipmentService.getShipmentsByStatus()
+  const chartData = stats.map((s) => ({
+    value: s.count,
+    name: s.status,
+  }))
   chartInstance.setOption({
     xAxis: {
       type: 'category',
@@ -27,11 +33,11 @@ onMounted(() => {
     yAxis: { type: 'value' },
     series: [
       {
-        data: [8, 15, 2],
         type: 'bar',
         itemStyle: {
-          color: '#512DA8', // match primary header color
+          color: '#512DA8',
         },
+        data: chartData,
       },
     ],
   })
