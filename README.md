@@ -1,5 +1,23 @@
 # device-logistics-ui
 Assessment - Device Logistics Vue App
+**Design considerations**
+**Diagrammatically: **
+
+App.vue 
+└── AppLayout.vue 
+      ├── AppHeader.vue 
+      ├── AppSidebar.vue 
+      └── <router-view> 
+           └── Dashboard.vue / Devices.vue / Shipments.vue / Quotations.vue
+
+**Benefits:**
+You can have any number of pages, all reusing the same layout. 
+You can also define different layouts for different route groups: 
+AuthLayout → for login/register pages (no sidebar) 
+AppLayout → for portal/dashboard (with sidebar + header) 
+State (e.g., Pinia) remains consistent across route changes. 
+Easy to add nested layouts if needed
+
 **1. Application source code structure**
 <img width="576" height="1074" alt="image" src="https://github.com/user-attachments/assets/ad2feab2-d7a5-4fb6-8bbd-f82c761c3c87" />
 
